@@ -1,0 +1,19 @@
+A collection of code that I'm writing just for fun.
+
+Consider the following lines as included in each file from this project.
+
+/*
+* Copyright (C) 2011 Stefano Brilli - stefanobrilli@gmail.com
+*
+*  This file is part of Funproject.
+*
+*  Funproject is free software; you can redistribute it and/or
+*  modify it under the terms of the GNU General Public License as
+*  published by the Free Software Foundation, version 2.
+*
+*  Funproject is distributed in the hope that it will be useful,
+*  but WITHOUT ANY WARRANTY; without even the implied warranty of
+*  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+*  See the GNU General Public License for more details.
+*/
+
