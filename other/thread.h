@@ -5,9 +5,7 @@
 #include <cerrno>
 #include <stdexcept>
 
-// Functor definitions. These functors binds a function pointer to
-// its args
-
+// Functor definitions for pointers to function and operators ()
 template <typename T, typename O> struct _functor0
 {
     _functor0(O obj) : o(obj) {}
@@ -28,8 +26,7 @@ template <typename T, typename O, typename I0, typename I1> struct _functor2
     _functor2(O obj, I0 a0, I1 a1) : o(obj), a0(a0), a1(a1) {}
     T operator()() { return o(a0, a1); }
     O o;
-    I0 a0;
-    I1 a1;
+    I0 a0; I1 a1;
 };
 
 template <typename T, typename O, typename I0, typename I1,
@@ -39,9 +36,7 @@ template <typename T, typename O, typename I0, typename I1,
     a2(a2) {}
     T operator()() { return o(a0, a1, a2); }
     O o;
-    I0 a0;
-    I1 a1;
-    I2 a2;
+    I0 a0; I1 a1; I2 a2;
 };
 
 template <typename T, typename O, typename I0, typename I1, typename I2,
@@ -51,10 +46,7 @@ template <typename T, typename O, typename I0, typename I1, typename I2,
     o(obj), a0(a0), a1(a1), a2(a2), a3(a3) {}
     T operator()() { return f(a0, a1, a2, a3); }
     O o;
-    I0 a0;
-    I1 a1;
-    I2 a2;
-    I3 a3;
+    I0 a0; I1 a1; I2 a2; I3 a3;
 };
 
 template <typename T, typename O, typename I0, typename I1, typename I2,
@@ -64,11 +56,7 @@ template <typename T, typename O, typename I0, typename I1, typename I2,
     o(obj), a0(a0), a1(a1), a2(a2), a3(a3), a4(a4) {}
     T operator()() { return f(a0, a1, a2, a3, a4); }
     O o;
-    I0 a0;
-    I1 a1;
-    I2 a2;
-    I3 a3;
-    I4 a4;
+    I0 a0; I1 a1; I2 a2; I3 a3; I4 a4;
 };
 
 template <typename T, typename O, typename I0, typename I1, typename I2,
@@ -79,12 +67,7 @@ template <typename T, typename O, typename I0, typename I1, typename I2,
     o(obj), a0(a0), a1(a1), a2(a2), a3(a3), a4(a4), a5(a5) {}
     T operator()() { return o(a0, a1, a2, a3, a4, a5); }
     O o;
-    I0 a0;
-    I1 a1;
-    I2 a2;
-    I3 a3;
-    I4 a4;
-    I5 a5;
+    I0 a0; I1 a1; I2 a2; I3 a3; I4 a4; I5 a5;
 };
 
 template <typename T, typename O, typename I0, typename I1, typename I2,
@@ -95,14 +78,7 @@ template <typename T, typename O, typename I0, typename I1, typename I2,
         I0 a0, I1 a1, I2, I3 a3, I4 a4, I5 a5, I6 a6) : 
     o(obj), a0(a0), a1(a1), a2(a2), a3(a3), a4(a4), a5(a5), a6(a6) {}
     T operator()() { return o(a0, a1, a2, a3, a4, a5, a6); }
-    O o;
-    I0 a0;
-    I1 a1;
-    I2 a2;
-    I3 a3;
-    I4 a4;
-    I5 a5;
-    I6 a6;
+    O o; I0 a0; I1 a1; I2 a2; I3 a3; I4 a4; I5 a5; I6 a6;
 };
 
 template <typename T, typename O, typename I0, typename I1, typename I2,
@@ -114,17 +90,10 @@ template <typename T, typename O, typename I0, typename I1, typename I2,
     o(obj), a0(a0), a1(a1), a2(a2), a3(a3), a4(a4), a5(a5), a6(a6), a7(a7) {}
     T operator()() { return o(a0, a1, a2, a3, a4, a5, a6, a7); }
     O o;
-    I0 a0;
-    I1 a1;
-    I2 a2;
-    I3 a3;
-    I4 a4;
-    I5 a5;
-    I6 a6;
-    I7 a7;
+    I0 a0; I1 a1; I2 a2; I3 a3; I4 a4; I5 a5; I6 a6; I7 a7;
 };
 
-// Class functor definitions: this functors binds class instance methods
+// Class functor definitions for class instance methods
 template <typename T, typename C> struct _class_functor0
 {
     _class_functor0(C* c, T(C::*m)()) : c(c), m(m) {}
@@ -145,13 +114,89 @@ template <typename T, typename C, typename I0> struct _class_functor1
 template <typename T, typename C, typename I0,
           typename I1> struct _class_functor2
 {
-    _class_functor2(C* c, T(C::*m)(I0), I0 a0, I1 a1) : c(c), m(m),
+    _class_functor2(C* c, T(C::*m)(I0, I1), I0 a0, I1 a1) : c(c), m(m),
     a0(a0), a1(a1) {}
     T operator()() { return (c->*m)(a0, a1); }
     T(C::*m)(I0, I1);
     C* c;
-    I0 a0;
-    I1 a1;
+    I0 a0; I1 a1;
+};
+
+template <typename T, typename C, typename I0,
+          typename I1, typename I2> struct _class_functor3
+{
+    _class_functor3(C* c, T(C::*m)(I0, I1, I2), I0 a0, I1 a1,
+    I2 a2) : c(c), m(m),
+    a0(a0), a1(a1), a2(a2) {}
+    T operator()() { return (c->*m)(a0, a1, a2); }
+    T(C::*m)(I0, I1, I2);
+    C* c;
+    I0 a0; I1 a1; I2 a2;
+};
+
+template <typename T, typename C, typename I0,
+          typename I1, typename I2, typename I3> struct _class_functor4
+{
+    _class_functor4(C* c, T(C::*m)(I0, I1, I2, I3), I0 a0, I1 a1,
+    I2 a2, I3 a3) : c(c), m(m),
+    a0(a0), a1(a1), a2(a2), a3(a3) {}
+    T operator()() { return (c->*m)(a0, a1, a2, a3); }
+    T(C::*m)(I0, I1, I2, I3);
+    C* c;
+    I0 a0; I1 a1; I2 a2; I3 a3;
+};
+
+template <typename T, typename C, typename I0,
+          typename I1, typename I2, typename I3,
+          typename I4> struct _class_functor5
+{
+    _class_functor5(C* c, T(C::*m)(I0, I1, I2, I3, I4), I0 a0, I1 a1,
+    I2 a2, I3 a3, I4 a4) : c(c), m(m),
+    a0(a0), a1(a1), a2(a2), a3(a3), a4(a4) {}
+    T operator()() { return (c->*m)(a0, a1, a2, a3, a4); }
+    T(C::*m)(I0, I1, I2, I3, I4);
+    C* c;
+    I0 a0; I1 a1; I2 a2; I3 a3; I4 a4;
+};
+
+template <typename T, typename C, typename I0,
+          typename I1, typename I2, typename I3,
+          typename I4, typename I5> struct _class_functor6
+{
+    _class_functor6(C* c, T(C::*m)(I0, I1, I2, I3, I4, I5), I0 a0, I1 a1,
+    I2 a2, I3 a3, I4 a4, I5 a5) : c(c), m(m),
+    a0(a0), a1(a1), a2(a2), a3(a3), a4(a4), a5(a5) {}
+    T operator()() { return (c->*m)(a0, a1, a2, a3, a4, a5); }
+    T(C::*m)(I0, I1, I2, I3, I4, I5);
+    C* c;
+    I0 a0; I1 a1; I2 a2; I3 a3; I4 a4; I5 a5;
+};
+
+template <typename T, typename C, typename I0,
+          typename I1, typename I2, typename I3,
+          typename I4, typename I5, typename I6> struct _class_functor7
+{
+    _class_functor7(C* c, T(C::*m)(I0, I1, I2, I3, I4, I5, I6), I0 a0, I1 a1,
+    I2 a2, I3 a3, I4 a4, I5 a5, I6 a6) : c(c), m(m),
+    a0(a0), a1(a1), a2(a2), a3(a3), a4(a4), a5(a5), a6(a6) {}
+    T operator()() { return (c->*m)(a0, a1, a2, a3, a4, a5, a6); }
+    T(C::*m)(I0, I1, I2, I3, I4, I5, I6);
+    C* c;
+    I0 a0; I1 a1; I2 a2; I3 a3; I4 a4; I5 a5; I6 a6;
+};
+
+template <typename T, typename C, typename I0,
+          typename I1, typename I2, typename I3,
+          typename I4, typename I5, typename I6,
+          typename I7> struct _class_functor8
+{
+    _class_functor8(C* c, T(C::*m)(I0, I1, I2, I3, I4, I5, I6, I7), 
+    I0 a0, I1 a1, I2 a2, I3 a3, I4 a4, I5 a5, I6 a6, I7) : c(c), m(m),
+    a0(a0), a1(a1), a2(a2), a3(a3), a4(a4), a5(a5), a6(a6), a7(a7) {}
+    T operator()() { return (c->*m)(a0, a1, a2, a3, a4, a5, a6, a7); }
+    T(C::*m)(I0, I1, I2, I3, I4, I5, I6, I7);
+    C* c;
+    I0 a0; I1 a1; I2 a2; I3 a3; I4 a4; I5 a5; I6 a6; I7 a7;
 };
 
 
@@ -277,7 +322,7 @@ public:
     template <typename T, typename O> static Result<T>
     run(O obj)
     {
-        // Generic callable
+        // Operator ()
         _functor0<T, O> o(obj);
         return Result<T>(_start<T>(o));
     }
@@ -346,7 +391,186 @@ public:
     }
 
     // Three args
+    template <typename T, typename O, typename I0,
+              typename I1, typename I2> static Result<T>
+    run(O obj, I0 a0, I1 a1, I2 a2)
+    {
+        _functor3<T, O, I0, I1, I2> o(obj, a0, a1, a2);
+        return Result<T>(_start<T>(o));
+    }
 
+    template <typename T, typename I0, typename I1,
+              typename I2> static Result<T>
+    run(T(*fun)(I0, I1, I2), I0 a0, I1 a1, I2 a2)
+    {
+        _functor3<T, T(*)(), I0, I1, I2> f(fun, a0, a1, a2);
+        return Result<T>(_start<T>(f));
+    }
+
+    template <typename T, typename C, typename I0,
+              typename I1, typename I2> static Result<T>
+    run(C* c, T(C::*fun)(I0, I1, I2), I0 a0, I1 a1, I2 a2)
+    {
+        _class_functor3<T, C, I0, I1, I2> f(c, fun, a0, a1, a2);
+        return Result<T>(_start<T>(f));
+    }
+
+    // Four args
+    template <typename T, typename O, typename I0,
+              typename I1, typename I2, typename I3> static Result<T>
+    run(O obj, I0 a0, I1 a1, I2 a2, I3 a3)
+    {
+        _functor4<T, O, I0, I1, I2, I3> o(obj, a0, a1, a2, a3);
+        return Result<T>(_start<T>(o));
+    }
+
+    template <typename T, typename I0, typename I1,
+              typename I2, typename I3> static Result<T>
+    run(T(*fun)(I0, I1, I2, I3), I0 a0, I1 a1, I2 a2, I3 a3)
+    {
+        _functor4<T, T(*)(), I0, I1, I2, I3> f(fun, a0, a1, a2, a3);
+        return Result<T>(_start<T>(f));
+    }
+
+    template <typename T, typename C, typename I0,
+              typename I1, typename I2, typename I3> static Result<T>
+    run(C* c, T(C::*fun)(I0, I1, I2, I3), I0 a0, I1 a1, I2 a2, I3 a3)
+    {
+        _class_functor4<T, C, I0, I1, I2, I3> f(c, fun, a0, a1, a2, a3);
+        return Result<T>(_start<T>(f));
+    }
+
+    // Five args
+    template <typename T, typename O, typename I0,
+              typename I1, typename I2, typename I3,
+              typename I4> static Result<T>
+    run(O obj, I0 a0, I1 a1, I2 a2, I3 a3, I4 a4)
+    {
+        _functor5<T, O, I0, I1, I2, I3, I4> o(obj, a0, a1, a2, a3, a4);
+        return Result<T>(_start<T>(o));
+    }
+
+    template <typename T, typename I0, typename I1,
+              typename I2, typename I3, typename I4> static Result<T>
+    run(T(*fun)(I0, I1, I2, I3, I4), I0 a0, I1 a1, I2 a2, I3 a3, I4 a4)
+    {
+        _functor5<T, T(*)(), I0, I1, I2, I3, I4> f(fun, a0, a1, a2, a3, a4);
+        return Result<T>(_start<T>(f));
+    }
+
+    template <typename T, typename C, typename I0,
+              typename I1, typename I2, typename I3,
+              typename I4> static Result<T>
+    run(C* c, T(C::*fun)(I0, I1, I2, I3, I4), 
+        I0 a0, I1 a1, I2 a2, I3 a3, I4 a4)
+    {
+        _class_functor5<T, C, I0, I1, I2, I3, I4>
+                f(c, fun, a0, a1, a2, a3, a4);
+        return Result<T>(_start<T>(f));
+    }
+
+    // Six args
+    template <typename T, typename O, typename I0,
+              typename I1, typename I2, typename I3,
+              typename I4, typename I5> static Result<T>
+    run(O obj, I0 a0, I1 a1, I2 a2, I3 a3, I4 a4, I5 a5)
+    {
+        _functor6<T, O, I0, I1, I2, I3, I4, I5>
+                o(obj, a0, a1, a2, a3, a4, a5);
+        return Result<T>(_start<T>(o));
+    }
+
+    template <typename T, typename I0, typename I1,
+              typename I2, typename I3, typename I4,
+              typename I5> static Result<T>
+    run(T(*fun)(I0, I1, I2, I3, I4, I5), 
+        I0 a0, I1 a1, I2 a2, I3 a3, I4 a4, I5 a5)
+    {
+        _functor6<T, T(*)(), I0, I1, I2, I3, I4, I5>
+                f(fun, a0, a1, a2, a3, a4, a5);
+        return Result<T>(_start<T>(f));
+    }
+
+    template <typename T, typename C, typename I0,
+              typename I1, typename I2, typename I3,
+              typename I4, typename I5> static Result<T>
+    run(C* c, T(C::*fun)(I0, I1, I2, I3, I4, I5), 
+        I0 a0, I1 a1, I2 a2, I3 a3, I4 a4, I5 a5)
+    {
+        _class_functor6<T, C, I0, I1, I2, I3, I4, I5>
+                f(c, fun, a0, a1, a2, a3, a4, a5);
+        return Result<T>(_start<T>(f));
+    }
+
+    // Seven args
+    template <typename T, typename O, typename I0,
+              typename I1, typename I2, typename I3,
+              typename I4, typename I5, typename I6> static Result<T>
+    run(O obj, I0 a0, I1 a1, I2 a2, I3 a3, I4 a4, I5 a5, I6 a6)
+    {
+        _functor7<T, O, I0, I1, I2, I3, I4, I5, I6>
+                o(obj, a0, a1, a2, a3, a4, a5, a6);
+        return Result<T>(_start<T>(o));
+    }
+
+    template <typename T, typename I0, typename I1,
+              typename I2, typename I3, typename I4,
+              typename I5, typename I6> static Result<T>
+    run(T(*fun)(I0, I1, I2, I3, I4, I5, I6), 
+        I0 a0, I1 a1, I2 a2, I3 a3, I4 a4, I5 a5, I6 a6)
+    {
+        _functor7<T, T(*)(), I0, I1, I2, I3, I4, I5, I6>
+                f(fun, a0, a1, a2, a3, a4, a5, a6);
+        return Result<T>(_start<T>(f));
+    }
+
+    template <typename T, typename C, typename I0,
+              typename I1, typename I2, typename I3,
+              typename I4, typename I5, typename I6> static Result<T>
+    run(C* c, T(C::*fun)(I0, I1, I2, I3, I4, I5, I6), 
+        I0 a0, I1 a1, I2 a2, I3 a3, I4 a4, I5 a5, I6 a6)
+    {
+        _class_functor7<T, C, I0, I1, I2, I3, I4, I5, I6>
+                f(c, fun, a0, a1, a2, a3, a4, a5, a6);
+        return Result<T>(_start<T>(f));
+    }
+
+    // Eight args
+    template <typename T, typename O, typename I0,
+              typename I1, typename I2, typename I3,
+              typename I4, typename I5, typename I6,
+              typename I7> static Result<T>
+    run(O obj, I0 a0, I1 a1, I2 a2, I3 a3, I4 a4, I5 a5, I6 a6, I7 a7)
+    {
+        _functor8<T, O, I0, I1, I2, I3, I4, I5, I6, I7>
+                o(obj, a0, a1, a2, a3, a4, a5, a6, a7);
+        return Result<T>(_start<T>(o));
+    }
+
+    template <typename T, typename I0, typename I1,
+              typename I2, typename I3, typename I4,
+              typename I5, typename I6, typename I7> static Result<T>
+    run(T(*fun)(I0, I1, I2, I3, I4, I5, I6, I7), 
+        I0 a0, I1 a1, I2 a2, I3 a3, I4 a4, I5 a5, I6 a6, I7 a7)
+    {
+        _functor8<T, T(*)(), I0, I1, I2, I3, I4, I5, I6, I7>
+                f(fun, a0, a1, a2, a3, a4, a5, a6, a7);
+        return Result<T>(_start<T>(f));
+    }
+
+    template <typename T, typename C, typename I0,
+              typename I1, typename I2, typename I3,
+              typename I4, typename I5, typename I6,
+              typename I7> static Result<T>
+    run(C* c, T(C::*fun)(I0, I1, I2, I3, I4, I5, I6, I7), 
+        I0 a0, I1 a1, I2 a2, I3 a3, I4 a4, I5 a5, I6 a6, I7 a7)
+    {
+        _class_functor8<T, C, I0, I1, I2, I3, I4, I5, I6, I7>
+                f(c, fun, a0, a1, a2, a3, a4, a5, a6, a7);
+        return Result<T>(_start<T>(f));
+    }
+
+protected:
     template <typename T, typename F> static _thread<T>*
     _start(const F& functor)
     {
