@@ -5,6 +5,144 @@
 #include <cerrno>
 #include <stdexcept>
 
+// Functor definitions. These functor binds a function pointer to
+// its args
+
+template <typename T> struct _functor0
+{
+    _functor0(T(*f)()) : f(f) {}
+    T operator()() { return f(); }
+    T(*f)();
+};
+
+template <typename T, typename I0> struct _functor1
+{
+    _functor1(T(*f)(I0), I0 a0) : f(f), a0(a0) {}
+    T operator()() { return f(a0); }
+    T(*f)(I0);
+    I0 a0;
+};
+
+template <typename T, typename I0, typename I1> struct _functor2
+{
+    _functor2(T(*f)(I0, I1), I0 a0, I1 a1) : f(f), a0(a0), a1(a1) {}
+    T operator()() { return f(a0, a1); }
+    T(*f)(I0, I1);
+    I0 a0;
+    I1 a1;
+};
+
+template <typename T, typename I0, typename I1, typename I2> struct _functor3
+{
+    _functor3(T(*f)(I0, I1, I2), I0 a0, I1 a1, I2) : f(f), a0(a0), a1(a1),
+    a2(a2){}
+    T operator()() { return f(a0, a1, a2); }
+    T(*f)(I0, I1, I2);
+    I0 a0;
+    I1 a1;
+    I2 a2;
+};
+
+template <typename T, typename I0, typename I1, typename I2,
+          typename I3> struct _functor4
+{
+    _functor4(T(*f)(I0, I1, I2, I3), I0 a0, I1 a1, I2, I3 a3) : 
+    f(f), a0(a0), a1(a1), a2(a2), a3(a3) {}
+    T operator()() { return f(a0, a1, a2, a3); }
+    T(*f)(I0, I1, I2, I3);
+    I0 a0;
+    I1 a1;
+    I2 a2;
+    I3 a3;
+};
+
+template <typename T, typename I0, typename I1, typename I2,
+          typename I3, typename I4> struct _functor5
+{
+    _functor5(T(*f)(I0, I1, I2, I3, I4), I0 a0, I1 a1, I2, I3 a3, I4 a4) : 
+    f(f), a0(a0), a1(a1), a2(a2), a3(a3), a4(a4) {}
+    T operator()() { return f(a0, a1, a2, a3, a4); }
+    T(*f)(I0, I1, I2, I3, I4);
+    I0 a0;
+    I1 a1;
+    I2 a2;
+    I3 a3;
+    I4 a4;
+};
+
+template <typename T, typename I0, typename I1, typename I2,
+          typename I3, typename I4, typename I5> struct _functor6
+{
+    _functor6(T(*f)(I0, I1, I2, I3, I4, I5), 
+        I0 a0, I1 a1, I2, I3 a3, I4 a4, I5 a5) : 
+    f(f), a0(a0), a1(a1), a2(a2), a3(a3), a4(a4), a5(a5) {}
+    T operator()() { return f(a0, a1, a2, a3, a4, a5); }
+    T(*f)(I0, I1, I2, I3, I4, I5);
+    I0 a0;
+    I1 a1;
+    I2 a2;
+    I3 a3;
+    I4 a4;
+    I5 a5;
+};
+
+template <typename T, typename I0, typename I1, typename I2,
+          typename I3, typename I4, typename I5,
+          typename I6> struct _functor7
+{
+    _functor7(T(*f)(I0, I1, I2, I3, I4, I5, I6), 
+        I0 a0, I1 a1, I2, I3 a3, I4 a4, I5 a5, I6 a6) : 
+    f(f), a0(a0), a1(a1), a2(a2), a3(a3), a4(a4), a5(a5), a6(a6) {}
+    T operator()() { return f(a0, a1, a2, a3, a4, a5, a6); }
+    T(*f)(I0, I1, I2, I3, I4, I5, I6);
+    I0 a0;
+    I1 a1;
+    I2 a2;
+    I3 a3;
+    I4 a4;
+    I5 a5;
+    I6 a6;
+};
+
+template <typename T, typename I0, typename I1, typename I2,
+          typename I3, typename I4, typename I5,
+          typename I6, typename I7> struct _functor8
+{
+    _functor8(T(*f)(I0, I1, I2, I3, I4, I5, I6, I7), 
+        I0 a0, I1 a1, I2, I3 a3, I4 a4, I5 a5, I6 a6, I7 a7) : 
+    f(f), a0(a0), a1(a1), a2(a2), a3(a3), a4(a4), a5(a5), a6(a6), a7(a7) {}
+    T operator()() { return f(a0, a1, a2, a3, a4, a5, a6, a7); }
+    T(*f)(I0, I1, I2, I3, I4, I5, I6, I7);
+    I0 a0;
+    I1 a1;
+    I2 a2;
+    I3 a3;
+    I4 a4;
+    I5 a5;
+    I6 a6;
+    I7 a7;
+};
+
+// Class functor definitions: this functors binds class instance methods
+template <typename T, typename C> struct _class_functor0
+{
+    _class_functor0(C* c, T(C::*m)()) : c(c), m(m) {}
+    T operator()() { return (c->*m)(); }
+    T(C::*m)();
+    C* c;
+};
+
+template <typename T, typename C, typename I0> struct _class_functor1
+{
+    _class_functor1(C* c, T(C::*m)(I0), I0 a0) : c(c), m(m), a0(a0) {}
+    T operator()() { return (c->*m)(a0); }
+    T(C::*m)(I0);
+    C* c;
+    I0 a0;
+};
+
+
+
 template <typename T> struct _thread
 {
     // This struct will hold the return value of the thread called func.
@@ -23,6 +161,10 @@ template <typename T> struct _thread
     volatile int counter;
 
     int join() { return pthread_join(thd, NULL); }
+    int start(void*(f)(void*), void* v)
+    {
+        return pthread_create(&thd, &attr, f, v);
+    }
     
     // Atomic function for add and sub
     int inc() { return __sync_fetch_and_add(&counter, 1); }
@@ -31,28 +173,6 @@ template <typename T> struct _thread
     private:
     _thread(const _thread&);
     _thread& operator=(const _thread&);
-};
-
-template <typename T, typename I> struct _help_st
-{
-    // This structure holds the pointer to the thread called function
-    // and its arguments. It also contains a pointer to
-    // the result-holding structure.
-    _help_st(_thread<T>* t, T(*f)(I), I a0) : thd(t), 
-                                              fun(f),
-                                              a0(a0)
-                                              { thd->inc(); }
-    ~_help_st() { thd->dec(); }
-
-    T(*fun)(I);
-    I a0;
-    _thread<T>* thd;
-
-    void exec() { thd->result = fun(a0); }
-
-private:
-    _help_st(const _help_st&);
-    _help_st& operator=(const _help_st&);
 };
 
 template <typename S> void* _help_fn(void* v)
@@ -114,22 +234,127 @@ template <typename T> struct Result
 };
 
 
+
+template <typename T, typename I> struct _help_st
+{
+    _help_st(_thread<T>* t, I f) : thd(t), functor(f)
+    {
+        thd->inc();
+    }
+
+    ~_help_st()
+    {
+        thd->dec();
+    }
+
+    I functor;
+    _thread<T>* thd;
+
+    void exec()
+    {
+        thd->result = functor();
+    }
+};
+
 class Thread
 {
 
 public:
-    template <typename T, typename I> static Result<T> run(T(*fun)(I), I a0)
+
+    template <typename T> static Result<T>
+    run(T(*fun)())
     {
-        
-        _thread<T>* mythread = new _thread<T>();
-
-        _help_st<T, I>* h = new _help_st<T, I>(mythread, fun, a0);
-        
-        pthread_create(&mythread->thd, &mythread->attr,
-            _help_fn< _help_st<T, I> >, h);
-
-        return Result<T>(mythread);
+        _functor0<T> f(fun);
+        return Result<T>(_start<T>(f));
     }
+
+    template <typename T, typename I0> static Result<T>
+    run(T(*fun)(I0), I0 a0)
+    {
+        _functor1<T, I0> f(fun, a0);
+        return Result<T>(_start<T>(f));
+    }
+
+    template <typename T, typename I0, typename I1> static Result<T>
+    run(T(*fun)(I0, I1), I0 a0, I1 a1)
+    {
+        _functor2<T, I0, I1> f(fun, a0, a1);
+        return Result<T>(_start<T>(f));
+    }
+
+    template <typename T, typename I0, typename I1,
+              typename I2> static Result<T>
+    run(T(*fun)(I0, I1, I2), I0 a0, I1 a1, I2 a2)
+    {
+        _functor3<T, I0, I1, I2> f(fun, a0, a1, a2);
+        return Result<T>(_start<T>(f));
+    }
+
+    template <typename T, typename I0, typename I1,
+              typename I2, typename I3> static Result<T>
+    run(T(*fun)(I0, I1, I2, I3), I0 a0, I1 a1, I2 a2, I3 a3)
+    {
+        _functor4<T, I0, I1, I2, I3> f(fun, a0, a1, a2, a3);
+        return Result<T>(_start<T>(f));
+    }
+
+    template <typename T, typename I0, typename I1,
+              typename I2, typename I3, typename I4> static Result<T>
+    run(T(*fun)(I0, I1, I2, I3, I4), I0 a0, I1 a1, I2 a2, I3 a3, I4 a4)
+    {
+        _functor5<T, I0, I1, I2, I3, I4> f(fun, a0, a1, a2, a3, a4);
+        return Result<T>(_start<T>(f));
+    }
+
+    template <typename T, typename I0, typename I1,
+              typename I2, typename I3, typename I4,
+              typename I5> static Result<T>
+    run(T(*fun)(I0, I1, I2, I3, I4, I5), I0 a0, I1 a1, I2 a2, I3 a3,
+                                         I4 a4, I5 a5)
+    {
+        _functor6<T, I0, I1, I2, I3, I4, I5> f(fun, a0, a1, a2, a3, a4, a5);
+        return Result<T>(_start<T>(f));
+    }
+
+    template <typename T, typename I0, typename I1,
+              typename I2, typename I3, typename I4,
+              typename I5, typename I6> static Result<T>
+    run(T(*fun)(I0, I1, I2, I3, I4, I5, I6), I0 a0, I1 a1, I2 a2, I3 a3,
+                                         I4 a4, I5 a5, I6 a6)
+    {
+        _functor7<T, I0, I1, I2, I3, I4, I5, I6>
+                f(fun, a0, a1, a2, a3, a4, a5, a6);
+        return Result<T>(_start<T>(f));
+    }
+
+    template <typename T, typename I0, typename I1,
+              typename I2, typename I3, typename I4,
+              typename I5, typename I6, typename I7> static Result<T>
+    run(T(*fun)(I0, I1, I2, I3, I4, I5, I6, I7), I0 a0, I1 a1, I2 a2, I3 a3,
+                                         I4 a4, I5 a5, I6 a6, I7 a7)
+    {
+        _functor8<T, I0, I1, I2, I3, I4, I5, I6, I7>
+                f(fun, a0, a1, a2, a3, a4, a5, a6, a7);
+        return Result<T>(_start<T>(f));
+    }
+
+    template <typename T, typename F> static _thread<T>*
+    _start(const F& functor)
+    {
+        _thread<T>* mythread = new _thread<T>();
+        _help_st<T, F >* h2 = new _help_st<T, F>(mythread, functor);
+        mythread->start(_help_fn<_help_st<T, F> >, h2);
+        return mythread;
+    }
+
+    template <typename T, typename C, typename I0> static Result<T>
+    run(C* c, T(C::*fun)(I0), I0 a0)
+    {
+        _class_functor1<T, C, I0> f(c, fun, a0);
+        return Result<T>(_start<T>(f));
+    }
+
+
 };
 
 
