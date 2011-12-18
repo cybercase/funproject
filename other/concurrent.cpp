@@ -25,6 +25,12 @@ class prova
         std::cerr << "operator" << i*j << "\n";
         return 1;
     }
+
+    double operator()()
+    {
+        std::cerr << "dbou" << i*i+j*j << "\n";
+        return 2.0;
+    }
 };
 
 int main(int argc, char** argv)
