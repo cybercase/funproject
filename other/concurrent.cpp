@@ -2,8 +2,9 @@
 #include "thread.h"
 #include <ctime>
 
-int tt(int i, int j)
+int tt()
 {
+    int i = 3, j =3;
     std::cerr << "t" << i*j << "t\n";
     return i*9;
 }
@@ -29,11 +30,12 @@ class prova
 int main(int argc, char** argv)
 {
 
-    Result<int> r = Thread::run(tt, 4, 5);
+    Result<int> r = Thread::run(tt);
     prova p(4, 5);
-    //Result<int> r = Thread::run(&p, &prova::stampa, 2);
-    //Result<int> = Thread::run(p);
+    Result<int> r3 = Thread::run(&p, &prova::stampa, 2);
+    Result<int> r2 = Thread::run<int>(p);
     std::cout << "Val:" << r.value() << std::endl;
+    std::cout << "Val2:" << r2.value() << std::endl;    
     std::cout << "OK\n";
     return 0;
 }

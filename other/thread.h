@@ -5,14 +5,14 @@
 #include <cerrno>
 #include <stdexcept>
 
-// Functor definitions. These functor binds a function pointer to
+// Functor definitions. These functors binds a function pointer to
 // its args
 
-template <typename T> struct _functor0
+template <typename T, typename O> struct _functor0
 {
-    _functor0(T(*f)()) : f(f) {}
-    T operator()() { return f(); }
-    T(*f)();
+    _functor0(O o) : o(o) {}
+    T operator()() { return o(); }
+    O o;
 };
 
 template <typename T, typename I0> struct _functor1
@@ -261,11 +261,18 @@ class Thread
 
 public:
 
+    template <typename T, typename O> static Result<T>
+    run(O obj)
+    {
+        _functor0<T, O> o(obj);
+        return Result<T>(_start<T>(o));
+    }
+
     template <typename T> static Result<T>
     run(T(*fun)())
     {
-        _functor0<T> f(fun);
-        return Result<T>(_start<T>(f));
+        _functor0<T, T(*)()> f(fun);
+        return run<T, _functor0<T, T(*)()> >(f);
     }
 
     template <typename T, typename I0> static Result<T>
@@ -345,6 +352,14 @@ public:
         _help_st<T, F >* h2 = new _help_st<T, F>(mythread, functor);
         mythread->start(_help_fn<_help_st<T, F> >, h2);
         return mythread;
+    }
+
+
+    template <typename T, typename C> static Result<T>
+    run(C* c, T(C::*fun)())
+    {
+        _class_functor0<T, C> f(c, fun);
+        return Result<T>(_start<T>(f));
     }
 
     template <typename T, typename C, typename I0> static Result<T>
