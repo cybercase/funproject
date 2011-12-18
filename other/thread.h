@@ -35,10 +35,10 @@ template <typename T, typename O, typename I0, typename I1> struct _functor2
 template <typename T, typename O, typename I0, typename I1,
           typename I2> struct _functor3
 {
-    _functor3(O obj, I0 a0, I1 a1, I2) : o(obj), a0(a0), a1(a1),
-    a2(a2){}
+    _functor3(O obj, I0 a0, I1 a1, I2 a2) : o(obj), a0(a0), a1(a1),
+    a2(a2) {}
     T operator()() { return o(a0, a1, a2); }
-    O obj;
+    O o;
     I0 a0;
     I1 a1;
     I2 a2;
@@ -111,7 +111,7 @@ template <typename T, typename O, typename I0, typename I1, typename I2,
 {
     _functor8(O obj, 
         I0 a0, I1 a1, I2, I3 a3, I4 a4, I5 a5, I6 a6, I7 a7) : 
-    f(f), a0(a0), a1(a1), a2(a2), a3(a3), a4(a4), a5(a5), a6(a6), a7(a7) {}
+    o(obj), a0(a0), a1(a1), a2(a2), a3(a3), a4(a4), a5(a5), a6(a6), a7(a7) {}
     T operator()() { return o(a0, a1, a2, a3, a4, a5, a6, a7); }
     O o;
     I0 a0;
@@ -142,6 +142,17 @@ template <typename T, typename C, typename I0> struct _class_functor1
     I0 a0;
 };
 
+template <typename T, typename C, typename I0,
+          typename I1> struct _class_functor2
+{
+    _class_functor2(C* c, T(C::*m)(I0), I0 a0, I1 a1) : c(c), m(m),
+    a0(a0), a1(a1) {}
+    T operator()() { return (c->*m)(a0, a1); }
+    T(C::*m)(I0, I1);
+    C* c;
+    I0 a0;
+    I1 a1;
+};
 
 
 template <typename T> struct _thread
@@ -328,13 +339,22 @@ public:
 
     template <typename T, typename C, typename I0,
               typename I1> static Result<T>
-    run(C* c, T(C::*fun)(I0, I1), I0 a0, I1, a1)
+    run(C* c, T(C::*fun)(I0, I1), I0 a0, I1 a1)
     {
         _class_functor2<T, C, I0, I1> f(c, fun, a0, a1);
         return Result<T>(_start<T>(f));
     }
 
     // Three args
+
+    template <typename T, typename F> static _thread<T>*
+    _start(const F& functor)
+    {
+        _thread<T>* mythread = new _thread<T>();
+        _help_st<T, F >* h2 = new _help_st<T, F>(mythread, functor);
+        mythread->start(_help_fn<_help_st<T, F> >, h2);
+        return mythread;
+    }
 
 };
 
