@@ -354,7 +354,7 @@ public:
     template <typename T, typename I0> static Result<T>
     run(T(*fun)(I0), I0 a0)
     {
-        _functor1<T, T(*)(), I0> f(fun, a0);
+        _functor1<T, T(*)(I0), I0> f(fun, a0);
         return Result<T>(_start<T>(f));
     }
 
@@ -378,7 +378,7 @@ public:
     template <typename T, typename I0, typename I1> static Result<T>
     run(T(*fun)(I0, I1), I0 a0, I1 a1)
     {
-        _functor2<T, T(*)(), I0, I1> f(fun, a0, a1);
+        _functor2<T, T(*)(I0, I1), I0, I1> f(fun, a0, a1);
         return Result<T>(_start<T>(f));
     }
 
@@ -403,7 +403,7 @@ public:
               typename I2> static Result<T>
     run(T(*fun)(I0, I1, I2), I0 a0, I1 a1, I2 a2)
     {
-        _functor3<T, T(*)(), I0, I1, I2> f(fun, a0, a1, a2);
+        _functor3<T, T(*)(I0, I1, I2), I0, I1, I2> f(fun, a0, a1, a2);
         return Result<T>(_start<T>(f));
     }
 
@@ -428,7 +428,8 @@ public:
               typename I2, typename I3> static Result<T>
     run(T(*fun)(I0, I1, I2, I3), I0 a0, I1 a1, I2 a2, I3 a3)
     {
-        _functor4<T, T(*)(), I0, I1, I2, I3> f(fun, a0, a1, a2, a3);
+        _functor4<T, T(*)(I0, I1, I2, I3), I0, I1, I2, I3>
+                f(fun, a0, a1, a2, a3);
         return Result<T>(_start<T>(f));
     }
 
@@ -454,7 +455,8 @@ public:
               typename I2, typename I3, typename I4> static Result<T>
     run(T(*fun)(I0, I1, I2, I3, I4), I0 a0, I1 a1, I2 a2, I3 a3, I4 a4)
     {
-        _functor5<T, T(*)(), I0, I1, I2, I3, I4> f(fun, a0, a1, a2, a3, a4);
+        _functor5<T, T(*)(I0, I1, I2, I2, I4), I0, I1, I2, I3, I4>
+                f(fun, a0, a1, a2, a3, a4);
         return Result<T>(_start<T>(f));
     }
 
@@ -486,7 +488,7 @@ public:
     run(T(*fun)(I0, I1, I2, I3, I4, I5), 
         I0 a0, I1 a1, I2 a2, I3 a3, I4 a4, I5 a5)
     {
-        _functor6<T, T(*)(), I0, I1, I2, I3, I4, I5>
+        _functor6<T, T(*)(I0, I1, I2, I3, I4, I5), I0, I1, I2, I3, I4, I5>
                 f(fun, a0, a1, a2, a3, a4, a5);
         return Result<T>(_start<T>(f));
     }
@@ -519,7 +521,8 @@ public:
     run(T(*fun)(I0, I1, I2, I3, I4, I5, I6), 
         I0 a0, I1 a1, I2 a2, I3 a3, I4 a4, I5 a5, I6 a6)
     {
-        _functor7<T, T(*)(), I0, I1, I2, I3, I4, I5, I6>
+        _functor7<T, T(*)(I0, I1, I2, I3, I4, I5, I6),
+                I0, I1, I2, I3, I4, I5, I6>
                 f(fun, a0, a1, a2, a3, a4, a5, a6);
         return Result<T>(_start<T>(f));
     }
@@ -553,7 +556,8 @@ public:
     run(T(*fun)(I0, I1, I2, I3, I4, I5, I6, I7), 
         I0 a0, I1 a1, I2 a2, I3 a3, I4 a4, I5 a5, I6 a6, I7 a7)
     {
-        _functor8<T, T(*)(), I0, I1, I2, I3, I4, I5, I6, I7>
+        _functor8<T, T(*)(I0, I1, I2, I3, I4, I5, I6, I7),
+                I0, I1, I2, I3, I4, I5, I6, I7>
                 f(fun, a0, a1, a2, a3, a4, a5, a6, a7);
         return Result<T>(_start<T>(f));
     }
