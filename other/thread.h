@@ -104,7 +104,7 @@ template <typename T, typename C> struct _class_functor0
 
 template <typename T, typename C, typename I0> struct _class_functor1
 {
-    _class_functor1(C* c, T(C::*m)(I0), I0 a0) : c(c), m(m), a0(a0) {}
+    _class_functor1(C* c, T(C::*m)(I0), I0 a0) : m(m), c(c), a0(a0) {}
     T operator()() { return (c->*m)(a0); }
     T(C::*m)(I0);
     C* c;
@@ -114,7 +114,7 @@ template <typename T, typename C, typename I0> struct _class_functor1
 template <typename T, typename C, typename I0,
           typename I1> struct _class_functor2
 {
-    _class_functor2(C* c, T(C::*m)(I0, I1), I0 a0, I1 a1) : c(c), m(m),
+    _class_functor2(C* c, T(C::*m)(I0, I1), I0 a0, I1 a1) : m(m), c(c),
     a0(a0), a1(a1) {}
     T operator()() { return (c->*m)(a0, a1); }
     T(C::*m)(I0, I1);
@@ -126,7 +126,7 @@ template <typename T, typename C, typename I0,
           typename I1, typename I2> struct _class_functor3
 {
     _class_functor3(C* c, T(C::*m)(I0, I1, I2), I0 a0, I1 a1,
-    I2 a2) : c(c), m(m),
+    I2 a2) : m(m), c(c),
     a0(a0), a1(a1), a2(a2) {}
     T operator()() { return (c->*m)(a0, a1, a2); }
     T(C::*m)(I0, I1, I2);
@@ -138,7 +138,7 @@ template <typename T, typename C, typename I0,
           typename I1, typename I2, typename I3> struct _class_functor4
 {
     _class_functor4(C* c, T(C::*m)(I0, I1, I2, I3), I0 a0, I1 a1,
-    I2 a2, I3 a3) : c(c), m(m),
+    I2 a2, I3 a3) : m(m), c(c),
     a0(a0), a1(a1), a2(a2), a3(a3) {}
     T operator()() { return (c->*m)(a0, a1, a2, a3); }
     T(C::*m)(I0, I1, I2, I3);
@@ -151,7 +151,7 @@ template <typename T, typename C, typename I0,
           typename I4> struct _class_functor5
 {
     _class_functor5(C* c, T(C::*m)(I0, I1, I2, I3, I4), I0 a0, I1 a1,
-    I2 a2, I3 a3, I4 a4) : c(c), m(m),
+    I2 a2, I3 a3, I4 a4) : m(m), c(c),
     a0(a0), a1(a1), a2(a2), a3(a3), a4(a4) {}
     T operator()() { return (c->*m)(a0, a1, a2, a3, a4); }
     T(C::*m)(I0, I1, I2, I3, I4);
@@ -164,7 +164,7 @@ template <typename T, typename C, typename I0,
           typename I4, typename I5> struct _class_functor6
 {
     _class_functor6(C* c, T(C::*m)(I0, I1, I2, I3, I4, I5), I0 a0, I1 a1,
-    I2 a2, I3 a3, I4 a4, I5 a5) : c(c), m(m),
+    I2 a2, I3 a3, I4 a4, I5 a5) : m(m), c(c),
     a0(a0), a1(a1), a2(a2), a3(a3), a4(a4), a5(a5) {}
     T operator()() { return (c->*m)(a0, a1, a2, a3, a4, a5); }
     T(C::*m)(I0, I1, I2, I3, I4, I5);
@@ -177,7 +177,7 @@ template <typename T, typename C, typename I0,
           typename I4, typename I5, typename I6> struct _class_functor7
 {
     _class_functor7(C* c, T(C::*m)(I0, I1, I2, I3, I4, I5, I6), I0 a0, I1 a1,
-    I2 a2, I3 a3, I4 a4, I5 a5, I6 a6) : c(c), m(m),
+    I2 a2, I3 a3, I4 a4, I5 a5, I6 a6) : m(m), c(c),
     a0(a0), a1(a1), a2(a2), a3(a3), a4(a4), a5(a5), a6(a6) {}
     T operator()() { return (c->*m)(a0, a1, a2, a3, a4, a5, a6); }
     T(C::*m)(I0, I1, I2, I3, I4, I5, I6);
@@ -191,7 +191,7 @@ template <typename T, typename C, typename I0,
           typename I7> struct _class_functor8
 {
     _class_functor8(C* c, T(C::*m)(I0, I1, I2, I3, I4, I5, I6, I7), 
-    I0 a0, I1 a1, I2 a2, I3 a3, I4 a4, I5 a5, I6 a6, I7) : c(c), m(m),
+    I0 a0, I1 a1, I2 a2, I3 a3, I4 a4, I5 a5, I6 a6, I7) : m(m), c(c),
     a0(a0), a1(a1), a2(a2), a3(a3), a4(a4), a5(a5), a6(a6), a7(a7) {}
     T operator()() { return (c->*m)(a0, a1, a2, a3, a4, a5, a6, a7); }
     T(C::*m)(I0, I1, I2, I3, I4, I5, I6, I7);
@@ -225,7 +225,12 @@ template <typename T> struct _thread
     
     // Atomic function for add and sub
     int inc() { return __sync_fetch_and_add(&counter, 1); }
-    int dec() { if (__sync_fetch_and_sub(&counter, 1) == 0) delete this; }
+    int dec()
+    {
+        if (__sync_fetch_and_sub(&counter, 1) == 0)
+            delete this;
+        return counter;
+    }
 
     private:
     _thread(const _thread&);
@@ -239,6 +244,7 @@ template <typename S> void* _help_fn(void* v)
     S* st = (S*)v;
     st->exec();
     delete st;
+    return NULL;
 };
 
 template <typename T> struct Result
@@ -294,8 +300,9 @@ template <typename T> struct Result
 
 template <typename T, typename I> struct _help_st
 {
-    _help_st(_thread<T>* t, I f) : thd(t), functor(f)
+    _help_st(_thread<T>* t, I f) : functor(f)
     {
+        thd = t;
         thd->inc();
     }
 
