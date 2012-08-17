@@ -71,6 +71,11 @@ private:
 template <typename T> class debug_ptr {
 public:
 
+	debug_ptr() {
+		pd_ = internal::shared_ptr_data<T>::new_shared_ptr_data(NULL);
+		pd_->IncrementRefCounter();
+	}
+
 	debug_ptr(T* ptr) {
 		pd_ = internal::shared_ptr_data<T>::new_shared_ptr_data(ptr);
 		pd_->IncrementRefCounter();
@@ -143,6 +148,11 @@ private:
 
 template <typename T> class debug_array {
 public:
+
+	debug_array() {
+		pd_ = internal::shared_ptr_data<T>::new_shared_ptr_data(NULL);
+		pd_->IncrementRefCounter();
+	}
 
 	debug_array(T* ptr) {
 		pd_ = internal::shared_ptr_data<T>::new_shared_ptr_data(ptr);
