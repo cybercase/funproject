@@ -4,7 +4,7 @@
 #include <iostream>
 #include <vector>
 
-arraydef(int, int_pa);
+typedef_array(int, int_pa);
 
 int main(int argc, char** argv) {
 	const int N = 10;

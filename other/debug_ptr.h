@@ -8,11 +8,11 @@ template <typename T> class debug_array;
 }
 
 #ifdef ENABLE_DEBUG_TYPES
-#define ptrdef(Type, Alias) typedef debug_types::debug_ptr< Type > Alias
-#define arraydef(Type, Alias) typedef debug_types::debug_array< Type > Alias
+#define typedef_pointer(Type, Alias) typedef debug_types::debug_ptr< Type > Alias
+#define typedef_array(Type, Alias) typedef debug_types::debug_array< Type > Alias
 #else
-#define ptrdef(Type, Alias) typedef Type* Alias
-#define arraydef(Type, Alias) typedef Type* Alias
+#define typedef_pointer(Type, Alias) typedef Type* Alias
+#define typedef_array(Type, Alias) typedef Type* Alias
 #endif
 
 
