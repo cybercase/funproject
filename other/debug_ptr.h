@@ -27,10 +27,10 @@
 #define DEBUG_TYPES_JOIN_ARGS(...) __VA_ARGS__
 
 #define typedef_pointer(Type, Alias, ...) \
-typedef debug_types::debug_ptr<false, DEBUG_TYPES_JOIN_ARGS(Type, ##__VA_ARGS__) > Alias
+typedef debug_types::debug_ptr<Type, DEBUG_TYPES_JOIN_ARGS(false, ##__VA_ARGS__) > Alias
 
 #define typedef_array(Type, Alias, ...) \
-typedef debug_types::debug_ptr<true, DEBUG_TYPES_JOIN_ARGS(Type, ##__VA_ARGS__) > Alias
+typedef debug_types::debug_ptr<Type, DEBUG_TYPES_JOIN_ARGS(true, ##__VA_ARGS__) > Alias
 
 namespace debug_types {
 
@@ -42,13 +42,13 @@ struct ThrowPolicy;
 
 // Declaration of the debug_ptr class. Note that this class is not actually defined.
 // This is to avoid instantiation of debug_ptr for non pointer types.
-template <bool Array, typename T, typename Policy=DEBUG_TYPES_POLICY> class debug_ptr;
+template <typename T, bool Array=false, typename Policy=DEBUG_TYPES_POLICY> class debug_ptr;
 // This forward declares the debug_ptr class for Pointer types.
-template <bool Array, typename T, typename Policy> class debug_ptr<Array, T*, Policy>;
+template <typename T, bool Array, typename Policy> class debug_ptr<T*, Array, Policy>;
 
 // This is the class that will delete the object and "mark" the object as deleted
 // (by setting to 0 its )
-template <bool Array, typename T, typename Policy> class deleter;
+template <typename T, bool Array, typename Policy> class deleter;
 }
 
 namespace debug_types {
@@ -79,8 +79,8 @@ namespace internal {
 
 template <typename T, typename Policy> class shared_ptr_data {
 	// Only the deleter class can set to 0 the inner pointer
-	friend class deleter<true, T, Policy>;
-	friend class deleter<false, T, Policy>;
+	friend class deleter<T, true, Policy>;
+	friend class deleter<T, false, Policy>;
 public:
 	static shared_ptr_data<T, Policy>* new_shared_ptr_data(T* ptr) {
 		return new shared_ptr_data<T, Policy>(ptr, 0);
@@ -119,16 +119,16 @@ private:
 
 // When deleter class is destroied it deletes the object referenced
 // in its shared_ptr_data. then Set to zero the address of that object
-template <bool Array, typename T, typename Policy> class deleter {
+template <typename T, bool Array, typename Policy> class deleter {
 public:
-	static deleter<Array, T, Policy>* new_deleter(
+	static deleter<T, Array, Policy>* new_deleter(
 			internal::shared_ptr_data<T, Policy>* spd) {
 		if (Array) {
-			deleter<Array, T, Policy>* tmp = new deleter<Array, T, Policy>[1];
+			deleter<T, Array, Policy>* tmp = new deleter<T, Array, Policy>[1];
 			tmp[0].spd_ = spd;
 			return tmp;
 		} else {
-			return new deleter<Array, T, Policy>(spd);
+			return new deleter<T, Array, Policy>(spd);
 		}
 	}
 
@@ -144,8 +144,8 @@ public:
 private:
 	deleter() : spd_(NULL) {};
 	deleter(internal::shared_ptr_data<T, Policy>* s) : spd_(s) {};
-	deleter(const deleter<Array, T, Policy>&);
-	deleter<Array, T, Policy>& operator=(const deleter&);
+	deleter(const deleter<T, Array, Policy>&);
+	deleter<T, Array, Policy>& operator=(const deleter&);
 
 	internal::shared_ptr_data<T, Policy>* spd_;
 };
@@ -155,7 +155,7 @@ private:
 // the reference counter inside its shared_ptr_data.
 // when the delete or delete [] operator is called on this class, the cast
 // to delete* operator is automatically called.
-template <bool Array, typename T, typename Policy> class debug_ptr<Array, T*, Policy> {
+template <typename T, bool Array, typename Policy> class debug_ptr<T*, Array, Policy> {
 public:
 
 	debug_ptr() {
@@ -168,12 +168,12 @@ public:
 		pd_->IncrementRefCounter();
 	}
 
-	debug_ptr(const debug_ptr<Array, T*, Policy>& o) {
+	debug_ptr(const debug_ptr<T*, Array, Policy>& o) {
 		o.pd_->IncrementRefCounter();
 		pd_ = o.pd_;
 	}
 
-	debug_ptr& operator=(const debug_ptr<Array, T*, Policy>& o) {
+	debug_ptr& operator=(const debug_ptr<T*, Array, Policy>& o) {
 		o.pd_->IncrementRefCounter();
 		pd_->DecrementRefCounter();
 		pd_ = o.pd_;
@@ -181,7 +181,7 @@ public:
 	}
 
 	debug_ptr& operator=(T* p) {
-		debug_ptr<Array, T*, Policy>(p).swap(this);
+		debug_ptr<T*, Array, Policy>(p).swap(this);
 		return *this;
 	}
 
@@ -196,13 +196,13 @@ public:
 	T& operator[](int offset) { return pd_->pointer()[offset]; }
 	const T& operator[](int offset) const { return pd_->pointer()[offset]; }
 
-	operator deleter<Array, T, Policy>*() {
-		return deleter<Array, T, Policy>::new_deleter(pd_);
+	operator deleter<T, Array, Policy>*() {
+		return deleter<T, Array, Policy>::new_deleter(pd_);
 	}
 
 private:
 
-	void swap(debug_ptr<Array, T*, Policy>* o) {
+	void swap(debug_ptr<T*, Array, Policy>* o) {
 		internal::shared_ptr_data<T, Policy>* tmp = pd_;
 		pd_ = o->pd_;
 		o->pd_ = tmp;
