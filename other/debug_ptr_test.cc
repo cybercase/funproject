@@ -11,6 +11,7 @@
 #define DEBUG_TYPES_POLICY ThrowPolicy
 
 #include <cstdlib>
+#include <cstring>
 #include <algorithm>
 #include <iostream>
 #include <vector>
