@@ -64,7 +64,7 @@ struct Bitmap
         std::cout << "BM: ";
         for (int i=0; i < size; ++i)
             std::cout << (bm[i/sizeof(char)]
-            && 1 << (i % sizeof(char)) ) ? 1 : 0;
+            && 1 << ( (i % sizeof(char)) ) ? 1 : 0 );
         std::cout << std::endl;
     }
 #endif
@@ -113,7 +113,7 @@ void generate_random_source(int len)
 
 static const int LEN = 1000000;
 
-int main(int argc, char *argv)
+int main(int argc, char **argv)
 {
     // Try open/generate input.txt
     std::fstream f("input.txt", std::ios_base::in);
