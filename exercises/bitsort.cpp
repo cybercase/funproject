@@ -15,6 +15,7 @@
 #include <fstream>
 #include <stdexcept>
 #include <cstdlib>
+#include <cstring>
 
 #define DEBUG
 
