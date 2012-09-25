@@ -42,7 +42,7 @@ template <typename T, typename O, typename I0, typename I1,
 template <typename T, typename O, typename I0, typename I1, typename I2,
           typename I3> struct _functor4
 {
-    _functor4(O obj, I0 a0, I1 a1, I2, I3 a3) : 
+    _functor4(O obj, I0 a0, I1 a1, I2 a2, I3 a3) : 
     o(obj), a0(a0), a1(a1), a2(a2), a3(a3) {}
     T operator()() { return f(a0, a1, a2, a3); }
     O o;
@@ -52,7 +52,7 @@ template <typename T, typename O, typename I0, typename I1, typename I2,
 template <typename T, typename O, typename I0, typename I1, typename I2,
           typename I3, typename I4> struct _functor5
 {
-    _functor5(O obj, I0 a0, I1 a1, I2, I3 a3, I4 a4) : 
+    _functor5(O obj, I0 a0, I1 a1, I2 a2, I3 a3, I4 a4) : 
     o(obj), a0(a0), a1(a1), a2(a2), a3(a3), a4(a4) {}
     T operator()() { return f(a0, a1, a2, a3, a4); }
     O o;
@@ -63,7 +63,7 @@ template <typename T, typename O, typename I0, typename I1, typename I2,
           typename I3, typename I4, typename I5> struct _functor6
 {
     _functor6(O obj, 
-        I0 a0, I1 a1, I2, I3 a3, I4 a4, I5 a5) : 
+        I0 a0, I1 a1, I2 a2, I3 a3, I4 a4, I5 a5) : 
     o(obj), a0(a0), a1(a1), a2(a2), a3(a3), a4(a4), a5(a5) {}
     T operator()() { return o(a0, a1, a2, a3, a4, a5); }
     O o;
@@ -75,7 +75,7 @@ template <typename T, typename O, typename I0, typename I1, typename I2,
           typename I6> struct _functor7
 {
     _functor7(O obj, 
-        I0 a0, I1 a1, I2, I3 a3, I4 a4, I5 a5, I6 a6) : 
+        I0 a0, I1 a1, I2 a2, I3 a3, I4 a4, I5 a5, I6 a6) : 
     o(obj), a0(a0), a1(a1), a2(a2), a3(a3), a4(a4), a5(a5), a6(a6) {}
     T operator()() { return o(a0, a1, a2, a3, a4, a5, a6); }
     O o; I0 a0; I1 a1; I2 a2; I3 a3; I4 a4; I5 a5; I6 a6;
@@ -86,7 +86,7 @@ template <typename T, typename O, typename I0, typename I1, typename I2,
           typename I6, typename I7> struct _functor8
 {
     _functor8(O obj, 
-        I0 a0, I1 a1, I2, I3 a3, I4 a4, I5 a5, I6 a6, I7 a7) : 
+        I0 a0, I1 a1, I2 a2, I3 a3, I4 a4, I5 a5, I6 a6, I7 a7) : 
     o(obj), a0(a0), a1(a1), a2(a2), a3(a3), a4(a4), a5(a5), a6(a6), a7(a7) {}
     T operator()() { return o(a0, a1, a2, a3, a4, a5, a6, a7); }
     O o;
@@ -191,7 +191,7 @@ template <typename T, typename C, typename I0,
           typename I7> struct _class_functor8
 {
     _class_functor8(C* c, T(C::*m)(I0, I1, I2, I3, I4, I5, I6, I7), 
-    I0 a0, I1 a1, I2 a2, I3 a3, I4 a4, I5 a5, I6 a6, I7) : m(m), c(c),
+    I0 a0, I1 a1, I2 a2, I3 a3, I4 a4, I5 a5, I6 a6, I7 a7) : m(m), c(c),
     a0(a0), a1(a1), a2(a2), a3(a3), a4(a4), a5(a5), a6(a6), a7(a7) {}
     T operator()() { return (c->*m)(a0, a1, a2, a3, a4, a5, a6, a7); }
     T(C::*m)(I0, I1, I2, I3, I4, I5, I6, I7);
