@@ -1,4 +1,4 @@
-PROJECT(funproject)
+project(funproject)
 
 add_executable(funlist funlist.cpp funlist.h)
 add_executable(missing missing.cpp)
