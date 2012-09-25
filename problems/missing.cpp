@@ -4,7 +4,7 @@
 * (So vector size is SIZE - number_of_missing_elements)
 * 
 * Problem:
-* Find one of the missing element in vector on O(N)
+* Find one of the missing element in vector in O(N)
 *
 * Assumption:
 * Integers are unique inside the entire vector.
