@@ -37,11 +37,12 @@ unsigned int on_search(std::vector<unsigned int>& input, unsigned int max_val)
         left.reserve(mask); right.reserve(mask);
 
         // Scan
-        for (int i=0; i<input.size(); ++i)
+        for (int i=0; i<static_cast<int>(input.size()); ++i) {
             if (input[i] & mask)
                 right.push_back(input[i]);
             else
                 left.push_back(input[i]);
+        }
 
         assert(right.size() <= max_val - mask); // Right uniqueness
         assert(input.size()-left.size() <= mask); // Left uniqueness
