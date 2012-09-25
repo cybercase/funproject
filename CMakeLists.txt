@@ -4,6 +4,6 @@ PROJECT(funproject)
 
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall")
 
-add_subdirectory(other)
-add_subdirectory(problems)
+add_subdirectory(exercises)
+add_subdirectory(experiments)
 
