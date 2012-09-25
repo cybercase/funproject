@@ -57,15 +57,18 @@ bool mypoint_all_sort_fn(const MyPoint& p0, const MyPoint& p1)
 {
     if (p0.color < p1.color)
         return true;
-    else if (p0.color == p1.color)
+    else if (p0.color == p1.color) {
         if (p0.d < p1.d)
             return true;
-        else if (p0.d == p1.d)
+        else if (p0.d == p1.d) {
             if (p0.y < p1.y)
                 return true;
-            else if (p0.y == p1.y)
+            else if (p0.y == p1.y) {
                 if (p0.x < p1.x)
                     return true;
+            }
+        }
+    }
     return false;
 }
 
