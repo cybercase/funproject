@@ -1,0 +1,7 @@
+<structures>
+    <structure name="Stock">
+        <field type="SizedString" maxlen="4">name</field>
+        <field type="PosInteger">shares</field>
+        <field type="PosFloat">price</field>
+    </structure>
+</structures>
