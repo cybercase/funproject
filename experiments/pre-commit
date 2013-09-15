@@ -1,0 +1,58 @@
+#!/bin/bash
+#
+# TAB CHECK:
+#
+# Searches tab characters in staged changes. 
+# To specify file extensions to check use "hooks.notabs" variable.
+# Extensions are separated by "|".
+# Eg:
+#   git config hooks.notabs html|js
+#
+# PEP8 CHECK:
+#
+# run pep8 on all python staged files.
+# To specify pep8 command options use "hook.pep8" variable
+#
+# Eg:
+#   git config hook.pep8options "--ignore=E226,E302"
+
+exec 1>&2
+
+notabs=$(git config hooks.notabs)
+notabs_error=0
+for f in `git diff --cached --name-only | egrep "\.("$notabs")$"`
+do
+    lines=`git show :$f | fgrep -n $'\t'`
+    if [ -n "$lines" ]; then
+        echo "TAB(s) found in:" $f "at line(s)"
+        echo $lines
+        notabs_error=1
+    fi
+done
+
+if [ $notabs_error -eq 1 ]; then
+    echo 
+    echo "Remove all TAB(s) characters and stage again your changes."
+    echo
+    exit 1
+fi
+
+pep8_options=$(git config hooks.pep8options)
+pep8_error=0
+for f in `git diff --cached --name-only | grep -e ".py$"` 
+do
+    git show :$f | pep8 --format=$f":%(row)d:%(col)d: %(code)s %(text)s" $pep8_options -
+    if [ $? -eq 1 ]; then
+        pep8_error=1
+    fi
+done
+
+if [ $pep8_error -eq 1 ]; then
+    echo 
+    echo "Your commit is cause of one or more PEP8 error(s)"
+    echo
+    echo "Please fix these errors and stage again your changes before commit"
+    echo
+    exit 1
+fi
+
